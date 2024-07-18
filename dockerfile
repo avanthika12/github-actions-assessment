@@ -1,12 +1,10 @@
-# Use an official OpenJDK runtime as a parent image
-FROM openjdk:17-jdk-slim
+FROM openjdk:8-jdk
 
-# Set the working directory
+RUN mkdir /app
+
+COPY app.jar /app/app.jar
+
 WORKDIR /app
 
-# Copy the built JAR file to the container
-COPY build/libs/*.jar app.jar
-
-# Run the application
+EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
