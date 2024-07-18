@@ -24,7 +24,6 @@ jobs:
         distribution: 'temurin'
 
     - name: Grant execute permission for Gradlew
-      if: runner.os != 'Windows'
       run: chmod +x gradlew
       shell: bash
 
@@ -37,10 +36,10 @@ jobs:
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v4
       with:
-        image: yavanthika/demo-repo
-        registry: docker.io
-        username: ${{secrets.DOCKER_USERNAME}}
-        password: ${{secrets.DOCKER_PASSWORD}}
+        image: docker.io/${{ secrets.DOCKER_USERNAME }}/demo-repo
+        tags: main-${{ github.sha }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
   dependency-submission:
     runs-on: ubuntu-latest
