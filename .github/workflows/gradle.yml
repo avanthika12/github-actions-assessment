@@ -40,8 +40,7 @@ jobs:
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        dockerfile: path/to/Dockerfile  # Update this line with the correct path to your Dockerfile
-        directory: path/to/build/context
+        dockerfile: dockerfile
 
   dependency-submission:
     runs-on: ubuntu-latest
