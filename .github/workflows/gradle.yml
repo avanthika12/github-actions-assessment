@@ -41,7 +41,6 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         dockerfile: ./dockerfile  
         directory: .  
-        tags: main-${{ github.sha }}
 
   dependency-submission:
     runs-on: ubuntu-latest
