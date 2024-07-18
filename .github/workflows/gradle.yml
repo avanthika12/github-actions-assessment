@@ -2,40 +2,40 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+    branches: [ "main" ]
+
+permissions:
+  contents: read
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 11
+          
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+      
+      - name: Execute Gradle build
+        run: |
+          chmod +x ./gradlew
+          ./gradlew bootJar          
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
+      - name: Execute Gradle build
+        run: |
+          chmod +x ./gradlew
+          ./gradlew bootJar          
 
-    - name: Grant execute permission for Gradlew
-      run: chmod +x gradlew
-      shell: bash
+      - name: Copy Jar file
+        run: mv build/libs/$(ls build/libs) app.jar
 
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5
-
-    - name: Build with Gradle Wrapper
-      run: ./gradlew build
-      shell: bash
-
-    - name: Push image to Registry
-      uses: docker/build-push-action@v1
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: ${{ secrets.DOCKER_USERNAME }}/demo-repo
-  
+      - uses: actions/upload-artifact@master
+        with:
+          name: jar-file
+          path: app.jar
